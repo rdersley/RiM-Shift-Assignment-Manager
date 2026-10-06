@@ -50,9 +50,10 @@ test('existing shifts and rules have edit-in-place controls', () => {
   assert.match(admin, /id:editRule\?\.id/);
 });
 
-test('manifest has one normal admin page plus one Configure safety page', () => {
+test('manifest has one normal admin page, one Configure safety page and the backup page', () => {
   const adminPageEntries = manifest.split('jira:projectPage:')[0].match(/- key: retailinmotion-shift-[^\n]+/g) || [];
-  assert.equal(adminPageEntries.length, 2);
+  assert.equal(adminPageEntries.length, 3);
+  assert.ok(adminPageEntries.some((entry) => entry.endsWith('retailinmotion-shift-assignment-backup')));
   assert.match(manifest, /title: Shift & Assignment Manager/);
   assert.match(manifest, /title: Shift Manager Routing Safety/);
   assert.ok(!manifest.includes('Shift Cover & Exceptions'));

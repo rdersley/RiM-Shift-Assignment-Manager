@@ -73,6 +73,8 @@ jobs:
             exit 1
           fi
 
+      - name: Build the Backup & restore page
+        run: npm run build
       - name: Deploy to development
         shell: bash
         run: |

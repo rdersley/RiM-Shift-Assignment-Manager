@@ -15,6 +15,11 @@ modules:
       title: Shift Manager Routing Safety
       layout: native
       useAsConfig: true
+    - key: retailinmotion-shift-assignment-backup
+      resource: backup-ui
+      resolver:
+        function: backup-resolver
+      title: Shift & Assignment Manager backup & restore
   jira:projectPage:
     - key: retailinmotion-shift-schedule-project-page
       resource: schedule-ui
@@ -44,6 +49,8 @@ modules:
       handler: schedule.handler
     - key: routing-settings
       handler: routingSettings.handler
+    - key: backup-resolver
+      handler: backupHandler.handler
     - key: jira-event-handler
       handler: background.jiraEventHandler
     - key: scheduled-handler
@@ -56,6 +63,8 @@ resources:
     path: src/frontend/schedule.jsx
   - key: routing-settings-ui
     path: src/frontend/routingSettings.jsx
+  - key: backup-ui
+    path: static/backup/build
 permissions:
   scopes:
     - storage:app
