@@ -1,0 +1,24 @@
+{
+  "name": "retailinmotion-shift-assignment-manager",
+  "version": "0.13.1",
+  "private": true,
+  "scripts": {
+    "test": "node --test",
+    "build": "echo 'UI Kit resources are bundled by Forge'",
+    "lint:domain": "node --check src/domain/shifts.js && node --check src/domain/shiftGroups.js && node --check src/engine/rules.js && node --check src/engine/assignment.js && node --check src/engine/triggers.js && node --check src/engine/issueModel.js && node --check src/engine/routingMode.js && node --check src/engine/audit.js && node --check src/lib/admin.js && node --check src/lib/kvsList.js && node --check src/lib/jira.js && node --check src/version.js && node --check src/lib/kvsTtl.js && node --check src/lib/xlsx.js && node --check src/domain/rota.js && node --check src/domain/roster.js && node --check src/lib/rosterService.js && node --check src/domain/workload.js && node --check src/lib/workloadService.js && node --check src/domain/userMatch.js && node --check src/housekeeping.js && node --check src/background.js && node --check src/routingSettings.js && node --check src/schedule.js && node --check src/index.js",
+    "check": "npm run lint:domain && npm run check:bundles && npm test",
+    "check:bundles": "node scripts/check-bundles.mjs"
+  },
+  "dependencies": {
+    "@forge/api": "^5.0.0",
+    "@forge/bridge": "^5.0.0",
+    "@forge/kvs": "^1.0.0",
+    "@forge/react": "^11.0.0",
+    "@forge/resolver": "^1.7.0",
+    "fflate": "^0.8.3",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12"
+  }
+}

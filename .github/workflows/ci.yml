@@ -1,0 +1,94 @@
+name: CI and Development Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: forge-development-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run checks
+        run: npm run check
+
+  deploy-development:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-24.04
+    env:
+      FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+      FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Forge CLI
+        run: npm install --global @forge/cli@latest
+
+      - name: Verify Forge authentication secrets
+        shell: bash
+        run: |
+          test -n "$FORGE_EMAIL" || (echo "FORGE_EMAIL secret is missing" && exit 1)
+          test -n "$FORGE_API_TOKEN" || (echo "FORGE_API_TOKEN secret is missing" && exit 1)
+
+      - name: Configure Forge for CI
+        run: forge settings set usage-analytics false
+
+      - name: Forge lint
+        shell: bash
+        run: |
+          set -o pipefail
+          forge lint 2>&1 | tee forge-lint.log || true
+          if grep -q "[1-9][0-9]* error" forge-lint.log; then
+            cat forge-lint.log
+            exit 1
+          fi
+          if grep -q "approval" forge-lint.log && ! grep -q "MAJOR_VERSION_RULE" forge-lint.log; then
+            cat forge-lint.log
+            exit 1
+          fi
+
+      - name: Deploy to development
+        shell: bash
+        run: |
+          set -o pipefail
+          for attempt in 1 2 3 4; do
+            echo "Forge deployment attempt ${attempt}/4"
+            if forge deploy --environment development --non-interactive --approve MAJOR_VERSION_RULE 2>&1 | tee forge-deploy.log; then
+              break
+            fi
+            if grep -q "Environment is blocked by other deployment" forge-deploy.log && [ "$attempt" -lt 4 ]; then
+              echo "Another Forge deployment is active. Waiting 45 seconds before retrying..."
+              sleep 45
+            else
+              exit 1
+            fi
+          done
+
+      - name: Upgrade Retail inMotion development installation
+        run: forge install --upgrade all --site retailinmotion-sandbox1.atlassian.net --product Jira --environment development --confirm-scopes --non-interactive
