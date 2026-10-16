@@ -1,6 +1,6 @@
 {
   "name": "retailinmotion-shift-assignment-manager",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "private": true,
   "scripts": {
     "test": "node --test --experimental-test-module-mocks",

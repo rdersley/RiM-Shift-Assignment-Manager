@@ -53,7 +53,7 @@ test('existing shifts and rules have edit-in-place controls', () => {
 test('manifest has one normal admin page, one Configure safety page and the backup page', () => {
   const adminPageEntries = manifest.split('jira:projectPage:')[0].match(/- key: retailinmotion-shift-[^\n]+/g) || [];
   assert.equal(adminPageEntries.length, 3);
-  assert.ok(adminPageEntries.some((entry) => entry.endsWith('retailinmotion-shift-assignment-backup')));
+  assert.ok(adminPageEntries.some((entry) => entry.trim().endsWith('retailinmotion-shift-assignment-backup')));
   // Forge allows one normal admin page: the others must be the Configure and Get started pages.
   assert.match(manifest, /retailinmotion-shift-assignment-backup[\s\S]*?useAsGetStarted: true/);
   assert.match(manifest, /title: Retail inMotion Shift & Assignment Manager/);
