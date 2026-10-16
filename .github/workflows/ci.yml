@@ -59,6 +59,9 @@ jobs:
       - name: Configure Forge for CI
         run: forge settings set usage-analytics false
 
+      - name: Build the Backup & restore page
+        run: npm run build
+
       - name: Forge lint
         shell: bash
         run: |
@@ -73,8 +76,6 @@ jobs:
             exit 1
           fi
 
-      - name: Build the Backup & restore page
-        run: npm run build
       - name: Deploy to development
         shell: bash
         run: |
@@ -92,5 +93,10 @@ jobs:
             fi
           done
 
-      - name: Upgrade Retail inMotion development installation
-        run: forge install --upgrade all --site retailinmotion-sandbox1.atlassian.net --product Jira --environment development --confirm-scopes --non-interactive
+      - name: Install or upgrade on the Retail inMotion sandbox
+        shell: bash
+        run: |
+          SITE=retailinmotion-sandbox1.atlassian.net
+          if ! forge install --upgrade all --site "$SITE" --product Jira --environment development --confirm-scopes --non-interactive; then
+            forge install --site "$SITE" --product Jira --environment development --confirm-scopes --non-interactive
+          fi

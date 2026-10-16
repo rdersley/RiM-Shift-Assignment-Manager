@@ -6,7 +6,7 @@ const manifest = await readFile(new URL('../manifest.yml', import.meta.url), 'ut
 
 test('manifest keeps the Jira admin page', () => {
   assert.match(manifest, /jira:adminPage:/);
-  assert.match(manifest, /title: Shift & Assignment Manager/);
+  assert.match(manifest, /title: Retail inMotion Shift & Assignment Manager/);
 });
 
 test('manifest subscribes to the required Jira routing events', () => {
