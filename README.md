@@ -2,7 +2,7 @@
 
 > **Retail inMotion edition.** Internal app for the Retail inMotion work site (`retailinmotion.atlassian.net`) and sandbox (`retailinmotion-sandbox1.atlassian.net`). It is a separate repository and Forge app from the Marketplace edition and is not published to the Atlassian Marketplace.
 >
-> Forge app id `a96f61d6-f669-41d1-8724-10b40c1b2ee3` (developer space "Jira Service Management Apps"). Merges deploy the development environment to the sandbox; the work site runs the **production** environment and is deployed only by the manual **Deploy to Retail inMotion work site** workflow. The app's Distribution status must be **Sharing** so users don't see an "Allow access" prompt. The **Brand check** workflow fails if the Marketplace brand appears anywhere in the repository.
+> Forge app id `0cba307a-da2b-4908-abd9-8ff94815f3f0` (developer space "Jira Service Management Apps"). Merges deploy the development environment to the sandbox; the work site runs the **production** environment and is deployed only by the manual **Deploy to Retail inMotion work site** workflow. The app's Distribution status must be **Sharing** so users don't see an "Allow access" prompt. The **Brand check** workflow fails if the Marketplace brand appears anywhere in the repository.
 
 Forge app for shift-aware Jira Service Management assignment. Admins define shift groups and assignment rules; the app routes tickets to agents who are on shift.
 
