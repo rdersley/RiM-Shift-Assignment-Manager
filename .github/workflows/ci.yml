@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
+          check-latest: true
 
       - name: Install dependencies
         run: npm install
@@ -43,6 +44,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
+          check-latest: true
 
       - name: Install dependencies
         run: npm install
